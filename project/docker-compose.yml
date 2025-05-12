@@ -2,7 +2,7 @@ services:
   zookeeper:
     image: 'bitnami/zookeeper:3.9.3'
     networks:
-      - ch_replicated
+      - clickhouse
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOOKEEPER_CLIENT_PORT=2181
@@ -17,7 +17,7 @@ services:
       - ./default_user.xml:/etc/clickhouse-server/users.d/default_user.xml
       - ./z_config.xml:/etc/clickhouse-server/config.d/z_config.xml
     ports:
-      - "8002:9000"
+      - "8001:9000"
       - "9123:8123"
     ulimits:
       nproc: 65535
@@ -25,9 +25,25 @@ services:
         soft: 262144
         hard: 262144
     networks:
-      - ch_replicated
+      - clickhouse
     depends_on:
       - zookeeper
+
+  clickhouse_23_1:
+    image: clickhouse/clickhouse-server:23.1
+    ports:
+     - "8002:9000"
+     - "9124:8123"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - clickhouse
+    depends_on:
+      - zookeeper
+
       
   clickhouse_23_11:
     image: clickhouse/clickhouse-server:23.11
@@ -36,19 +52,19 @@ services:
       - /etc/clickhouse-server/config.d/z_config.xml
     ports:
       - "8003:9000"
-      - "9124:8123"
+      - "9125:8123"
     ulimits:
       nproc: 65535
       nofile:
         soft: 262144
         hard: 262144
     networks:
-      - ch_replicated
+      - clickhouse
     depends_on:
       - zookeeper
       
 
 networks:
-  ch_replicated:
+  clickhouse:
     driver: bridge
   
