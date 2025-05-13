@@ -1,18 +1,7 @@
 services:
-  zookeeper:
-    image: 'bitnami/zookeeper:3.9.3'
-    networks:
-      - clickhouse
-    environment:
-      - ALLOW_ANONYMOUS_LOGIN=yes
-      - ZOOKEEPER_CLIENT_PORT=2181
-    ports:
-      - "2182:2181"
-      - "2888:2888"
-      - "3888:3888"
-    
-  clickhouse_25_1:
-    image: clickhouse/clickhouse-server:25.1
+
+  clickhouse_21_3:
+    image: clickhouse/clickhouse-server:21.3
     volumes:
       - ./default_user.xml:/etc/clickhouse-server/users.d/default_user.xml
       - ./z_config.xml:/etc/clickhouse-server/config.d/z_config.xml
@@ -26,8 +15,6 @@ services:
         hard: 262144
     networks:
       - clickhouse
-    depends_on:
-      - zookeeper
 
   clickhouse_23_1:
     image: clickhouse/clickhouse-server:23.1
@@ -41,10 +28,7 @@ services:
         hard: 262144
     networks:
       - clickhouse
-    depends_on:
-      - zookeeper
 
-      
   clickhouse_23_11:
     image: clickhouse/clickhouse-server:23.11
     volumes:
@@ -60,11 +44,40 @@ services:
         hard: 262144
     networks:
       - clickhouse
-    depends_on:
-      - zookeeper
-      
+
+  clickhouse_24_4:
+    image: clickhouse/clickhouse-server:24.4
+    volumes:
+      - ./default_user.xml:/etc/clickhouse-server/users.d/default_user.xml
+      - ./z_config.xml:/etc/clickhouse-server/config.d/z_config.xml
+    ports:
+      - "8004:9000"
+      - "9126:8123"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - clickhouse
+
+  clickhouse_25_4:
+    image: clickhouse/clickhouse-server:25.4
+    volumes:
+      - ./default_user.xml:/etc/clickhouse-server/users.d/default_user.xml
+      - ./z_config.xml:/etc/clickhouse-server/config.d/z_config.xml
+    ports:
+      - "8005:9000"
+      - "9127:8123"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - clickhouse
 
 networks:
   clickhouse:
     driver: bridge
-  
+
