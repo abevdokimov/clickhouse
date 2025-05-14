@@ -29,22 +29,6 @@ services:
     networks:
       - clickhouse
 
-  clickhouse_23_11:
-    image: clickhouse/clickhouse-server:23.11
-    volumes:
-      - /etc/clickhouse-server/users.d/default_user.xml
-      - /etc/clickhouse-server/config.d/z_config.xml
-    ports:
-      - "8003:9000"
-      - "9125:8123"
-    ulimits:
-      nproc: 65535
-      nofile:
-        soft: 262144
-        hard: 262144
-    networks:
-      - clickhouse
-
   clickhouse_24_4:
     image: clickhouse/clickhouse-server:24.4
     volumes:
@@ -53,6 +37,22 @@ services:
     ports:
       - "8004:9000"
       - "9126:8123"
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 262144
+        hard: 262144
+    networks:
+      - clickhouse
+
+ clickhouse_25_1:
+    image: clickhouse/clickhouse-server:25.1
+    volumes:
+      - ./default_user.xml:/etc/clickhouse-server/users.d/default_user.xml
+      - ./z_config.xml:/etc/clickhouse-server/config.d/z_config.xml
+    ports:
+      - "8006:9000"
+      - "9128:8123"
     ulimits:
       nproc: 65535
       nofile:
