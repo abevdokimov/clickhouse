@@ -45,7 +45,7 @@ services:
     networks:
       - clickhouse
 
- clickhouse_25_1:
+  clickhouse_25_1:
     image: clickhouse/clickhouse-server:25.1
     volumes:
       - ./default_user.xml:/etc/clickhouse-server/users.d/default_user.xml
